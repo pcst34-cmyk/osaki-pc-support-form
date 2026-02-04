@@ -17,13 +17,12 @@ st.markdown("""
 
 :root {
     --primary-color: #C06014;
-    --bg-color: #FDFBF8;
+    --bg-color: #F3EFEA;
     --text-color: #333333;
     --accent-color: #EAAA79;
     --white-color: #FFFFFF;
-    --border-color: #E0E0E0;
-    --chat-bg-assistant: #ffffff;
-    --chat-bg-user: #e3f2fd; /* 薄い青に変更してユーザー感を出す */
+    --border-color: #C06014; /* 枠線もテーマカラーに合わせる */
+    --chat-bg: #FFFFFF;
 }
 
 /* 全体のスタイル */
@@ -42,11 +41,11 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
 .main-header {
     text-align: center;
     padding: 30px 20px;
-    background: linear-gradient(135deg, #004d99, #002244);
+    background-color: var(--primary-color); /* グラデーションではなく単色指定 */
     color: #ffffff !important;
     border-radius: 12px;
     margin-bottom: 40px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 .main-header h1 {
     margin: 0;
@@ -62,19 +61,19 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
     opacity: 0.9;
 }
 
-/* チャットメッセージ（吹き出し風） */
+/* チャットメッセージ（点線で囲んだ角丸四角形） */
 .stChatMessage {
-    background-color: var(--chat-bg-assistant);
+    background-color: var(--chat-bg);
     padding: 20px;
-    border-radius: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    border: 1px solid #f0f0f0;
+    border-radius: 20px; /* 丸みを強く */
+    margin-bottom: 20px;
+    border: 2px dotted var(--primary-color); /* オレンジの点線 */
+    box-shadow: none;
 }
-/* ユーザーのメッセージ（背景色を変える） */
+/* ユーザーのメッセージも同じデザインで統一感を出す */
 .stChatMessage[data-testid="stChatMessage"]:nth-child(odd) {
-    background-color: var(--chat-bg-user);
-    border: 1px solid #bbdefb;
+    background-color: var(--chat-bg);
+    border: 2px dotted var(--primary-color);
 }
 .stChatMessage p {
     line-height: 1.8;
@@ -83,7 +82,7 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
 /* 入力フィールド */
 .stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] {
     border-radius: 8px;
-    border: 1px solid var(--border-color);
+    border: 1px solid #ccc;
     padding: 12px;
     background-color: var(--white-color);
     color: var(--text-color);
@@ -97,14 +96,14 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
 /* ボタン共通 */
 div.stButton > button {
     width: 100%;
-    border-radius: 30px;
+    border-radius: 30px; /* 角丸ボタン */
     padding: 0.6rem 1rem;
     font-weight: bold;
     border: none;
     transition: all 0.2s;
 }
 
-/* プライマリボタン (Submit, 選択肢) */
+/* プライマリボタン (Submit, 選択肢) - オレンジに白抜き */
 div.stButton > button:first-child {
     background-color: var(--primary-color);
     color: #ffffff !important;
