@@ -6,6 +6,82 @@ from email.mime.text import MIMEText
 import ssl
 
 # ==========================================
+# --- ページ設定 ---
+st.set_page_config(page_title="パソコン修理・診断 - 大崎市出張サポート", page_icon="💻")
+
+# カスタムCSSの適用
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap');
+
+:root {
+    --primary-color: #C06014;
+    --bg-color: #FDFBF8;
+    --text-color: #423A3A;
+    --accent-color: #EAAA79;
+    --white-color: #FFFFFF;
+    --border-color: #EAE0D8;
+}
+
+/* 全体のフォントと背景 */
+.stApp {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: var(--text-color);
+}
+
+/* 入力フィールドのスタイル */
+.stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] {
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    background-color: var(--white-color);
+}
+
+.stTextInput input:focus, .stTextArea textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+/* ボタンのスタイル (Primary) */
+div.stButton > button:first-child {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50px;
+    padding: 10px 40px;
+    font-weight: bold;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+div.stButton > button:first-child:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    color: var(--text-color); 
+}
+
+/* Secondary Button (もしあれば) */
+div.stButton > button:nth-child(2) {
+    background-color: #999;
+}
+
+/* チャットメッセージのスタイル調整 */
+.stChatMessage {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# ==========================================
 # 1. データ・設定
 # ==========================================
 DATA_FILE = "diagnosis_data.json"
@@ -64,11 +140,10 @@ def send_email(booking_name, booking_tel, booking_email, booking_address, bookin
 # ==========================================
 # 2. アプリ初期化
 # ==========================================
-st.set_page_config(
-    page_title="大崎市出張PCサポート受付",
-    page_icon="🔧",
-    layout="wide"
-)
+# ==========================================
+# 2. アプリ初期化 (設定済み)
+# ==========================================
+
 
 # セッション初期化
 if "diagnosis_data" not in st.session_state:
