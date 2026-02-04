@@ -30,7 +30,7 @@ st.markdown("""
     font-family: 'Noto Sans JP', sans-serif;
 }
 
-h1, h2, h3 {
+h1, h2, h3, p, div, span {
     font-family: 'M PLUS Rounded 1c', sans-serif;
     color: var(--text-color);
 }
@@ -41,6 +41,7 @@ h1, h2, h3 {
     border: 1px solid var(--border-color);
     padding: 10px;
     background-color: var(--white-color);
+    color: var(--text-color);
 }
 
 .stTextInput input:focus, .stTextArea textarea:focus {
@@ -51,7 +52,7 @@ h1, h2, h3 {
 /* ボタンのスタイル (Primary) */
 div.stButton > button:first-child {
     background-color: var(--primary-color);
-    color: white;
+    color: white !important; /* ボタンの文字は白 */
     border-radius: 50px;
     padding: 10px 40px;
     font-weight: bold;
@@ -64,19 +65,44 @@ div.stButton > button:first-child:hover {
     background-color: var(--accent-color);
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    color: var(--text-color); 
+    color: var(--text-color) !important; 
 }
 
 /* Secondary Button (もしあれば) */
 div.stButton > button:nth-child(2) {
     background-color: #999;
+    color: white !important;
 }
 
 /* チャットメッセージのスタイル調整 */
 .stChatMessage {
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
+    color: var(--text-color) !important;
 }
+.stChatMessage p {
+    color: var(--text-color) !important;
+}
+
+
+
+    /* ヘッダーのスタイル */
+    .main-header {
+        text-align: center;
+        padding: 20px 0;
+        background: linear-gradient(135deg, #0066cc, #003366);
+        color: white !important;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+    .main-header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        color: white !important;
+    }
+    .main-header p {
+        color: white !important;
+    }
 
 </style>
 """, unsafe_allow_html=True)
@@ -138,11 +164,9 @@ def send_email(booking_name, booking_tel, booking_email, booking_address, bookin
         return False
 
 # ==========================================
-# 2. アプリ初期化
-# ==========================================
-# ==========================================
 # 2. アプリ初期化 (設定済み)
 # ==========================================
+
 
 
 # セッション初期化
@@ -150,25 +174,8 @@ if "diagnosis_data" not in st.session_state:
     st.session_state.diagnosis_data = load_data()
 
 # CSS
-st.markdown("""
-<style>
-    .stChatMessage {
-        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-    }
-    .main-header {
-        text-align: center;
-        padding: 20px 0;
-        background: linear-gradient(135deg, #0066cc, #003366);
-        color: white;
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-    .main-header h1 {
-        margin: 0;
-        font-size: 1.5rem;
-    }
-</style>
-""", unsafe_allow_html=True)
+# CSS (統合済みのため削除)
+
 
 # ==========================================
 # 3. メイン処理
