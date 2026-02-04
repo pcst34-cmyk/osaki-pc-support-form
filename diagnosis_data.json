@@ -1,0 +1,62 @@
+{
+    "start": {
+        "message": "こんにちは！大崎市出張PCサポートです。\nパソコンのトラブルですか？どのような症状か教えてください。",
+        "options": [
+            {
+                "label": "電源が入らない・起動しない",
+                "next_step": "power_issue"
+            },
+            {
+                "label": "ネットが繋がらない・遅い",
+                "next_step": "internet_issue"
+            },
+            {
+                "label": "画面に変な表示が出る",
+                "next_step": "display_issue"
+            },
+            {
+                "label": "その他の相談・修理予約",
+                "next_step": "booking"
+            }
+        ]
+    },
+    "power_issue": {
+        "message": "電源トラブルですね。コンセントやバッテリーは正しく接続されていますか？\n一度ケーブルを抜き差しして、数分待ってから電源を入れてみてください。\nそれでも直らない場合は、部品の故障の可能性があります。",
+        "options": [
+            {
+                "label": "直った！",
+                "next_step": "solved"
+            },
+            {
+                "label": "直らないので相談したい",
+                "next_step": "booking"
+            }
+        ]
+    },
+    "internet_issue": {
+        "message": "インターネットのトラブルですね。ルーターの再起動（電源抜き差し）は試されましたか？\n多くの場合はこれで改善します。",
+        "options": [
+            {
+                "label": "改善した",
+                "next_step": "solved"
+            },
+            {
+                "label": "改善しない",
+                "next_step": "booking"
+            }
+        ]
+    },
+    "display_issue": {
+        "message": "詐欺警告（「ウイルスに感染しました」などの音声や画面）ではありませんか？\n表示されている電話番号には**絶対に電話しないでください**。\n強制終了（電源長押し）で消えることが多いです。",
+        "options": [
+            {
+                "label": "詐欺警告っぽいです",
+                "next_step": "booking"
+            },
+            {
+                "label": "画面が割れている/映らない",
+                "next_step": "booking"
+            }
+        ]
+    }
+}
