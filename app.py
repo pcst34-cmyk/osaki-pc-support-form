@@ -7,12 +7,12 @@ import ssl
 
 # ==========================================
 # --- ページ設定 ---
-st.set_page_config(page_title="パソコン修理・診断 - 大崎市出張サポート", page_icon="💻")
+st.set_page_config(page_title="大崎市出張パソコン修理サポート", page_icon="💻")
 
 # カスタムCSSの適用
 st.markdown("""
 <style>
-/* フォント設定: Windows向けのメイリオ、Mac向けのHiraginoを優先し、読みやすさを向上 */
+/* フォント設定 */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 
 :root {
@@ -22,9 +22,11 @@ st.markdown("""
     --accent-color: #EAAA79;
     --white-color: #FFFFFF;
     --border-color: #E0E0E0;
+    --chat-bg-assistant: #ffffff;
+    --chat-bg-user: #e3f2fd; /* 薄い青に変更してユーザー感を出す */
 }
 
-/* 全体のスタイル調整 */
+/* 全体のスタイル */
 .stApp {
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -36,32 +38,51 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
 }
 
-/* ヘッダーのスタイル (強制的に白文字) */
+/* ヘッダーのスタイル */
 .main-header {
     text-align: center;
-    padding: 30px 0;
-    background: linear-gradient(135deg, #0056b3, #002a4d); /* 少し深めの青で高級感 */
+    padding: 30px 20px;
+    background: linear-gradient(135deg, #004d99, #002244);
     color: #ffffff !important;
     border-radius: 12px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 .main-header h1 {
     margin: 0;
     font-size: 1.8rem;
-    font-weight: bold;
+    font-weight: 700;
     color: #ffffff !important;
-    letter-spacing: 0.05em;
+    letter-spacing: 1px;
 }
 .main-header p {
     margin-top: 10px;
     color: #f0f0f0 !important;
     font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* チャットメッセージ（吹き出し風） */
+.stChatMessage {
+    background-color: var(--chat-bg-assistant);
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border: 1px solid #f0f0f0;
+}
+/* ユーザーのメッセージ（背景色を変える） */
+.stChatMessage[data-testid="stChatMessage"]:nth-child(odd) {
+    background-color: var(--chat-bg-user);
+    border: 1px solid #bbdefb;
+}
+.stChatMessage p {
+    line-height: 1.8;
 }
 
 /* 入力フィールド */
 .stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] {
-    border-radius: 8px; /* 角丸を少し抑えて洗練させる */
+    border-radius: 8px;
     border: 1px solid var(--border-color);
     padding: 12px;
     background-color: var(--white-color);
@@ -73,61 +94,43 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
     box-shadow: 0 0 0 2px rgba(192, 96, 20, 0.2);
 }
 
-/* プライマリボタン (Submitなど) */
+/* ボタン共通 */
+div.stButton > button {
+    width: 100%;
+    border-radius: 30px;
+    padding: 0.6rem 1rem;
+    font-weight: bold;
+    border: none;
+    transition: all 0.2s;
+}
+
+/* プライマリボタン (Submit, 選択肢) */
 div.stButton > button:first-child {
     background-color: var(--primary-color);
     color: #ffffff !important;
-    border-radius: 50px;
-    padding: 0.75rem 2rem;
-    font-weight: bold;
-    border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
-    letter-spacing: 0.05em;
 }
 div.stButton > button:first-child:hover {
-    background-color: #a04c0b; /* 少し濃いオレンジ */
+    background-color: #a04c0b;
     color: #ffffff !important;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 div.stButton > button:first-child p {
     color: #ffffff !important;
 }
 
-/* セカンダリボタン */
-div.stButton > button:nth-child(2) {
+/* リセットボタン等は控えめに */
+div.stButton > button.secondary {
     background-color: #f0f0f0;
     color: #333 !important;
-    border: 1px solid #ccc;
-}
-div.stButton > button:nth-child(2):hover {
-    background-color: #e0e0e0;
-    color: #333 !important;
 }
 
-/* チャットメッセージ */
-.stChatMessage {
-    background-color: transparent;
-    padding: 1rem;
-    border-radius: 12px;
-}
-.stChatMessage[data-testid="stChatMessage"]:nth-child(2n) {
-    background-color: rgba(255, 255, 255, 0.6);
-}
-.stChatMessage p {
-    color: var(--text-color) !important;
-    line-height: 1.6;
-}
-
-/* その他微調整 */
-label {
-    font-weight: bold;
-    color: var(--text-color) !important;
-}
+/* スピナー */
 .stSpinner > div > div {
     border-top-color: var(--primary-color) !important;
 }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -143,6 +146,7 @@ def load_data():
     return {}
 
 def save_data(data):
+    """データを保存する"""
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
@@ -167,6 +171,7 @@ def send_email(booking_name, booking_tel, booking_email, booking_address, bookin
     
     ■お名前: {booking_name}
     ■電話番号: {booking_tel}
+    ■メールアドレス: {booking_email}
     ■ご住所: {booking_address}
     ■症状詳細:
     {booking_detail}
@@ -191,15 +196,9 @@ def send_email(booking_name, booking_tel, booking_email, booking_address, bookin
 # 2. アプリ初期化 (設定済み)
 # ==========================================
 
-
-
 # セッション初期化
 if "diagnosis_data" not in st.session_state:
     st.session_state.diagnosis_data = load_data()
-
-# CSS
-# CSS (統合済みのため削除)
-
 
 # ==========================================
 # 3. メイン処理
@@ -281,7 +280,7 @@ else:
     # ---------------------------
     st.markdown("""
     <div class="main-header">
-        <h1>🔧 大崎市出張PCサポート</h1>
+        <h1>🔧 大崎市出張パソコン修理サポート</h1>
         <p>パソコントラブル、まずはこちらで診断！</p>
     </div>
     """, unsafe_allow_html=True)
