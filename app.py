@@ -105,37 +105,49 @@ div.main-header p {
     background-color: #FFFFFF;
 }
 
-/* ボタンのスタイル強制適用 (全てのボタン) */
-div.stButton > button, 
-div.stButton > button:first-child, 
-div.stButton > button:focus, 
-div.stButton > button:active {
-    width: 100%;
-    border-radius: 30px;
-    padding: 0.6rem 1rem;
-    font-weight: bold;
-    border: none;
-    background-color: #C06014 !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* --- ボタンのスタイル強制適用 (最強設定) --- */
+/* Base Button, Primary, Secondary 全て対象 */
+button[kind="primary"], 
+button[kind="secondary"], 
+[data-testid="baseButton-secondary"], 
+[data-testid="baseButton-primary"],
+.stButton > button {
+    width: 100% !important;
+    border-radius: 30px !important;
+    padding: 0.6rem 1rem !important;
+    font-weight: bold !important;
+    border: none !important;
+    background-color: #C06014 !important; /* オレンジ強制 */
+    color: #ffffff !important; /* 白文字強制 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* ボタン内の全ての要素（テキストpタグなど）を白にする */
-div.stButton > button * {
+/* コンテナ内のボタン内テキスト自体の色も白に強制 */
+button[kind="primary"] *, 
+button[kind="secondary"] *,
+[data-testid="baseButton-secondary"] *, 
+[data-testid="baseButton-primary"] *,
+.stButton > button * {
     color: #ffffff !important;
     fill: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
 }
 
-div.stButton > button:hover {
+/* ホバー設定 */
+button[kind="primary"]:hover, 
+button[kind="secondary"]:hover, 
+[data-testid="baseButton-secondary"]:hover, 
+[data-testid="baseButton-primary"]:hover,
+.stButton > button:hover {
     background-color: #d17025 !important;
     color: #ffffff !important;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    border-color: #d17025 !important;
 }
 
-/* 住所検索ボタン等の特定のボタンも全て同じスタイルで統一 */
-div[data-testid="column"] button {
-    background-color: #C06014 !important; 
+/* フォーカス時の枠線消去 or 色合わせ */
+button:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px #EAAA79 !important;
     color: #ffffff !important;
 }
 
@@ -143,6 +155,7 @@ div[data-testid="column"] button {
 .stSpinner > div > div {
     border-top-color: var(--primary-color) !important;
 }
+
 
 </style>
 """, unsafe_allow_html=True)
