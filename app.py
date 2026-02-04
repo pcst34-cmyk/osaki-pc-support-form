@@ -106,39 +106,49 @@ div.main-header p {
 }
 
 /* --- ボタンのスタイル強制適用 (最強設定) --- */
-/* Base Button, Primary, Secondary 全て対象 */
-button[kind="primary"], 
-button[kind="secondary"], 
-[data-testid="baseButton-secondary"], 
-[data-testid="baseButton-primary"],
-.stButton > button {
+/* Primaryボタン（赤くなるやつ）をオレンジに強制変更 */
+button[kind="primary"],
+[data-testid="baseButton-primary"] {
+    background-color: #C06014 !important;
+    border-color: #C06014 !important;
+    color: #ffffff !important;
+}
+
+/* Secondaryボタン（黒/クリアになるやつ）も一応オレンジに */
+button[kind="secondary"],
+[data-testid="baseButton-secondary"] {
+    background-color: #C06014 !important;
+    border-color: #C06014 !important;
+    color: #ffffff !important;
+}
+
+/* フォームの送信ボタン */
+[data-testid="stFormSubmitButton"] > button {
+    background-color: #C06014 !important;
+    border-color: #C06014 !important;
+    color: #ffffff !important;
+}
+
+/* 共通設定 */
+div.stButton > button {
     width: 100% !important;
     border-radius: 30px !important;
     padding: 0.6rem 1rem !important;
     font-weight: bold !important;
-    border: none !important;
-    background-color: #C06014 !important; /* オレンジ強制 */
-    color: #ffffff !important; /* 白文字強制 */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* コンテナ内のボタン内テキスト自体の色も白に強制 */
-button[kind="primary"] *, 
-button[kind="secondary"] *,
-[data-testid="baseButton-secondary"] *, 
-[data-testid="baseButton-primary"] *,
-.stButton > button * {
+/* ボタン内の全ての要素（テキストpタグなど）を白にする */
+button * {
     color: #ffffff !important;
     fill: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
 }
 
 /* ホバー設定 */
-button[kind="primary"]:hover, 
-button[kind="secondary"]:hover, 
-[data-testid="baseButton-secondary"]:hover, 
-[data-testid="baseButton-primary"]:hover,
-.stButton > button:hover {
+button:hover,
+button[kind="primary"]:hover,
+[data-testid="baseButton-primary"]:hover {
     background-color: #d17025 !important;
     color: #ffffff !important;
     border-color: #d17025 !important;
