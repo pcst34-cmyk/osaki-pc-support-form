@@ -386,7 +386,7 @@ else:
             with col_btn:
                 st.write("") # スペース調整
                 st.write("")
-                search_clicked = st.form_submit_button("住所検索")
+                search_clicked = st.form_submit_button("住所検索", type="primary")
             
             # 住所検索ロジック (再描画時に反映させる工夫)
             if search_clicked and zip_code:
@@ -404,12 +404,13 @@ else:
             detail = st.text_area("詳しい症状（任意）")
             
             st.markdown("---")
-            submit_btn = st.form_submit_button("内容を送信する")
+            submit_btn = st.form_submit_button("内容を送信する", type="primary")
             
             if submit_btn:
                 if name and tel and address:
                     with st.spinner("送信中..."):
                         if send_email(name, tel, email, zip_code, address, detail):
+
                             st.session_state.step = "completed"
                             st.session_state.booking_info = f"{name}様"
                             st.rerun()
