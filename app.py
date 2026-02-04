@@ -37,30 +37,31 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
     font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
 }
 
-/* ヘッダーのスタイル */
-.main-header {
+/* ヘッダーのスタイル - 特異性を高める */
+div.main-header {
     text-align: center;
     padding: 30px 20px;
-    background-color: var(--primary-color);
+    background-color: #C06014 !important;
     color: #ffffff !important;
     border-radius: 12px;
     margin-bottom: 40px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
-.main-header h1 {
-    margin: 0;
+div.main-header h1 {
     font-size: 1.8rem;
     font-weight: 700;
     color: #ffffff !important;
     letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.4); /* シャドウを少し濃くして白文字を強調 */
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5) !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #ffffff !important;
 }
-.main-header p {
+div.main-header p {
     margin-top: 10px;
     color: #f0f0f0 !important;
     font-size: 1rem;
-    opacity: 0.9;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    opacity: 1 !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3) !important;
 }
 
 /* チャットメッセージ */
@@ -104,33 +105,39 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
     background-color: #FFFFFF;
 }
 
-/* ボタン共通設定 (確実に白文字にする) */
-div.stButton > button {
+/* ボタンのスタイル強制適用 (全てのボタン) */
+div.stButton > button, 
+div.stButton > button:first-child, 
+div.stButton > button:focus, 
+div.stButton > button:active {
     width: 100%;
     border-radius: 30px;
     padding: 0.6rem 1rem;
     font-weight: bold;
     border: none;
-    transition: all 0.2s;
-    background-color: var(--primary-color); /* 全てのボタンをオレンジに */
-    color: #ffffff !important; /* 文字色を白に強制 */
+    background-color: #C06014 !important;
+    color: #ffffff !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* ボタン内の全ての要素（テキストpタグなど）を白にする */
+div.stButton > button * {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
 div.stButton > button:hover {
-    background-color: #a04c0b;
+    background-color: #d17025 !important;
     color: #ffffff !important;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-div.stButton > button p {
-    color: #ffffff !important; /* ボタン内のテキスト要素も白強制 */
+/* 住所検索ボタン等の特定のボタンも全て同じスタイルで統一 */
+div[data-testid="column"] button {
+    background-color: #C06014 !important; 
+    color: #ffffff !important;
 }
-
-/* 住所検索ボタン等の微調整 */
-/* 必要に応じて個別に指定するが、今回は全てオレンジボタン白文字で統一感を出す */
-
 
 /* スピナー */
 .stSpinner > div > div {
