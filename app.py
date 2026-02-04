@@ -12,98 +12,122 @@ st.set_page_config(page_title="パソコン修理・診断 - 大崎市出張サ�
 # カスタムCSSの適用
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap');
+/* フォント設定: Windows向けのメイリオ、Mac向けのHiraginoを優先し、読みやすさを向上 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap');
 
 :root {
     --primary-color: #C06014;
     --bg-color: #FDFBF8;
-    --text-color: #423A3A;
+    --text-color: #333333;
     --accent-color: #EAAA79;
     --white-color: #FFFFFF;
-    --border-color: #EAE0D8;
+    --border-color: #E0E0E0;
 }
 
-/* 全体のフォントと背景 */
+/* 全体のスタイル調整 */
 .stApp {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: 'Noto Sans JP', sans-serif;
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
 }
 
-h1, h2, h3, p, div, span {
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+h1, h2, h3, p, div, span, label, .stMarkdown {
     color: var(--text-color);
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
 }
 
-/* 入力フィールドのスタイル */
+/* ヘッダーのスタイル (強制的に白文字) */
+.main-header {
+    text-align: center;
+    padding: 30px 0;
+    background: linear-gradient(135deg, #0056b3, #002a4d); /* 少し深めの青で高級感 */
+    color: #ffffff !important;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.main-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #ffffff !important;
+    letter-spacing: 0.05em;
+}
+.main-header p {
+    margin-top: 10px;
+    color: #f0f0f0 !important;
+    font-size: 1rem;
+}
+
+/* 入力フィールド */
 .stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] {
-    border-radius: 15px;
+    border-radius: 8px; /* 角丸を少し抑えて洗練させる */
     border: 1px solid var(--border-color);
-    padding: 10px;
+    padding: 12px;
     background-color: var(--white-color);
     color: var(--text-color);
+    font-size: 1rem;
 }
-
 .stTextInput input:focus, .stTextArea textarea:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(192, 96, 20, 0.2);
 }
 
-/* ボタンのスタイル (Primary) */
+/* プライマリボタン (Submitなど) */
 div.stButton > button:first-child {
     background-color: var(--primary-color);
-    color: white !important; /* ボタンの文字は白 */
+    color: #ffffff !important;
     border-radius: 50px;
-    padding: 10px 40px;
+    padding: 0.75rem 2rem;
     font-weight: bold;
     border: none;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    letter-spacing: 0.05em;
 }
-
 div.stButton > button:first-child:hover {
-    background-color: var(--accent-color);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    color: var(--text-color) !important; 
+    background-color: #a04c0b; /* 少し濃いオレンジ */
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+div.stButton > button:first-child p {
+    color: #ffffff !important;
 }
 
-/* Secondary Button (もしあれば) */
+/* セカンダリボタン */
 div.stButton > button:nth-child(2) {
-    background-color: #999;
-    color: white !important;
+    background-color: #f0f0f0;
+    color: #333 !important;
+    border: 1px solid #ccc;
+}
+div.stButton > button:nth-child(2):hover {
+    background-color: #e0e0e0;
+    color: #333 !important;
 }
 
-/* チャットメッセージのスタイル調整 */
+/* チャットメッセージ */
 .stChatMessage {
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 10px;
-    color: var(--text-color) !important;
+    background-color: transparent;
+    padding: 1rem;
+    border-radius: 12px;
+}
+.stChatMessage[data-testid="stChatMessage"]:nth-child(2n) {
+    background-color: rgba(255, 255, 255, 0.6);
 }
 .stChatMessage p {
     color: var(--text-color) !important;
+    line-height: 1.6;
 }
 
-
-
-    /* ヘッダーのスタイル */
-    .main-header {
-        text-align: center;
-        padding: 20px 0;
-        background: linear-gradient(135deg, #0066cc, #003366);
-        color: white !important;
-        border-radius: 10px;
-        margin-bottom: 20px;
-    }
-    .main-header h1 {
-        margin: 0;
-        font-size: 1.5rem;
-        color: white !important;
-    }
-    .main-header p {
-        color: white !important;
-    }
-
+/* その他微調整 */
+label {
+    font-weight: bold;
+    color: var(--text-color) !important;
+}
+.stSpinner > div > div {
+    border-top-color: var(--primary-color) !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
