@@ -53,14 +53,14 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
     font-weight: 700;
     color: #ffffff !important;
     letter-spacing: 1px;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 文字の視認性を高めるシャドウ */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4); /* シャドウを少し濃くして白文字を強調 */
 }
 .main-header p {
     margin-top: 10px;
     color: #f0f0f0 !important;
     font-size: 1rem;
     opacity: 0.9;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
 /* チャットメッセージ */
@@ -94,7 +94,7 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
     border-radius: 8px;
     border: 1px solid #ccc;
     padding: 12px;
-    background-color: #FAFAFA; /* 少しグレーにして入力欄をわかりやすく */
+    background-color: #FAFAFA;
     color: var(--text-color);
     font-size: 1rem;
 }
@@ -104,7 +104,7 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
     background-color: #FFFFFF;
 }
 
-/* ボタン共通 */
+/* ボタン共通設定 (確実に白文字にする) */
 div.stButton > button {
     width: 100%;
     border-radius: 30px;
@@ -112,32 +112,25 @@ div.stButton > button {
     font-weight: bold;
     border: none;
     transition: all 0.2s;
-}
-
-/* プライマリボタン - オレンジ */
-div.stButton > button:first-child {
-    background-color: var(--primary-color);
-    color: #ffffff !important;
+    background-color: var(--primary-color); /* 全てのボタンをオレンジに */
+    color: #ffffff !important; /* 文字色を白に強制 */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-div.stButton > button:first-child:hover {
+
+div.stButton > button:hover {
     background-color: #a04c0b;
     color: #ffffff !important;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
-div.stButton > button:first-child p {
-    color: #ffffff !important;
+
+div.stButton > button p {
+    color: #ffffff !important; /* ボタン内のテキスト要素も白強制 */
 }
 
-/* 住所検索ボタンなど (Secondaryに近いもの) */
-div.stButton > button:nth-child(1) {
-    /* Streamlitのボタン順序により、フォーム内の検索ボタンなどのスタイル調整が必要
-       ここでは汎用的にFirst childをPrimaryとしていますが、
-       検索ボタンは個別にキーなどを使ってCSSクラスを当てられないため、
-       全体の統一感を優先します。
-    */
-}
+/* 住所検索ボタン等の微調整 */
+/* 必要に応じて個別に指定するが、今回は全てオレンジボタン白文字で統一感を出す */
+
 
 /* スピナー */
 .stSpinner > div > div {
