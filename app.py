@@ -21,7 +21,7 @@ st.markdown("""
     --text-color: #333333;
     --accent-color: #EAAA79;
     --white-color: #FFFFFF;
-    --border-color: #C06014; /* 枠線もテーマカラーに合わせる */
+    --border-color: #C06014;
     --chat-bg: #FFFFFF;
 }
 
@@ -41,7 +41,7 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
 .main-header {
     text-align: center;
     padding: 30px 20px;
-    background-color: var(--primary-color); /* グラデーションではなく単色指定 */
+    background-color: var(--primary-color);
     color: #ffffff !important;
     border-radius: 12px;
     margin-bottom: 40px;
@@ -53,24 +53,25 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
     font-weight: 700;
     color: #ffffff !important;
     letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2); /* 文字の視認性を高めるシャドウ */
 }
 .main-header p {
     margin-top: 10px;
     color: #f0f0f0 !important;
     font-size: 1rem;
     opacity: 0.9;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
-/* チャットメッセージ（点線で囲んだ角丸四角形） */
+/* チャットメッセージ */
 .stChatMessage {
     background-color: var(--chat-bg);
     padding: 20px;
-    border-radius: 20px; /* 丸みを強く */
+    border-radius: 20px;
     margin-bottom: 20px;
-    border: 2px dotted var(--primary-color); /* オレンジの点線 */
+    border: 2px dotted var(--primary-color);
     box-shadow: none;
 }
-/* ユーザーのメッセージも同じデザインで統一感を出す */
 .stChatMessage[data-testid="stChatMessage"]:nth-child(odd) {
     background-color: var(--chat-bg);
     border: 2px dotted var(--primary-color);
@@ -79,31 +80,41 @@ h1, h2, h3, p, div, span, label, .stMarkdown {
     line-height: 1.8;
 }
 
+/* フォームのカードスタイル化 */
+[data-testid="stForm"] {
+    background-color: #FFFFFF;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 1px solid #E0E0E0;
+}
+
 /* 入力フィールド */
 .stTextInput input, .stTextArea textarea, .stSelectbox div[data-baseweb="select"] {
     border-radius: 8px;
     border: 1px solid #ccc;
     padding: 12px;
-    background-color: var(--white-color);
+    background-color: #FAFAFA; /* 少しグレーにして入力欄をわかりやすく */
     color: var(--text-color);
     font-size: 1rem;
 }
 .stTextInput input:focus, .stTextArea textarea:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(192, 96, 20, 0.2);
+    background-color: #FFFFFF;
 }
 
 /* ボタン共通 */
 div.stButton > button {
     width: 100%;
-    border-radius: 30px; /* 角丸ボタン */
+    border-radius: 30px;
     padding: 0.6rem 1rem;
     font-weight: bold;
     border: none;
     transition: all 0.2s;
 }
 
-/* プライマリボタン (Submit, 選択肢) - オレンジに白抜き */
+/* プライマリボタン - オレンジ */
 div.stButton > button:first-child {
     background-color: var(--primary-color);
     color: #ffffff !important;
@@ -119,10 +130,13 @@ div.stButton > button:first-child p {
     color: #ffffff !important;
 }
 
-/* リセットボタン等は控えめに */
-div.stButton > button.secondary {
-    background-color: #f0f0f0;
-    color: #333 !important;
+/* 住所検索ボタンなど (Secondaryに近いもの) */
+div.stButton > button:nth-child(1) {
+    /* Streamlitのボタン順序により、フォーム内の検索ボタンなどのスタイル調整が必要
+       ここでは汎用的にFirst childをPrimaryとしていますが、
+       検索ボタンは個別にキーなどを使ってCSSクラスを当てられないため、
+       全体の統一感を優先します。
+    */
 }
 
 /* スピナー */
@@ -149,7 +163,7 @@ def save_data(data):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
-def send_email(booking_name, booking_tel, booking_email, booking_address, booking_detail):
+def send_email(booking_name, booking_tel, booking_email, booking_zip, booking_address, booking_detail):
     """予約完了メールを送信する"""
     if "email" not in st.secrets:
         st.error("メール設定が見つかりません。.streamlit/secrets.toml を設定してください。")
@@ -171,7 +185,9 @@ def send_email(booking_name, booking_tel, booking_email, booking_address, bookin
     ■お名前: {booking_name}
     ■電話番号: {booking_tel}
     ■メールアドレス: {booking_email}
+    ■郵便番号: {booking_zip}
     ■ご住所: {booking_address}
+    
     ■症状詳細:
     {booking_detail}
     """
@@ -190,6 +206,23 @@ def send_email(booking_name, booking_tel, booking_email, booking_address, bookin
     except Exception as e:
         st.error(f"メール送信エラー: {e}")
         return False
+
+import urllib.request
+
+def search_address_by_zip(zipcode):
+    """郵便番号から住所を検索する"""
+    if not zipcode:
+        return None
+    try:
+        url = f"https://zipcloud.ibsnet.co.jp/api/search?zipcode={zipcode}"
+        with urllib.request.urlopen(url) as response:
+            data = json.loads(response.read().decode("utf-8"))
+            if data["results"]:
+                result = data["results"][0]
+                return f"{result['address1']}{result['address2']}{result['address3']}"
+    except Exception:
+        pass
+    return None
 
 # ==========================================
 # 2. アプリ初期化 (設定済み)
@@ -320,21 +353,55 @@ else:
             st.write("承知いたしました。出張修理・診断の予約を受け付けます。")
             st.write("以下のフォームに必要事項を入力して「送信」を押してください。")
         
+        # 郵便番号検索用の一時変数
+        if "form_address" not in st.session_state:
+            st.session_state.form_address = ""
+            
+        # フォームの外で検索処理（フォーム内だとボタンで送信されてしまうため、またはform_submitと分ける）
+        # ただしレイアウト的にフォームっぽく見せる。
+        # シンプルに実装するため、フォーム内ボタンにするか、colを使う。
+        # ユーザー体験的には「検索」推して自動入力がいい。
+
         with st.form("booking_form"):
-            name = st.text_input("お名前")
-            tel = st.text_input("電話番号")
+            st.markdown("### お客様情報入力")
+            name = st.text_input("お名前 *")
+            
+            # 郵便番号と検索
+            col_zip, col_btn = st.columns([2, 1])
+            with col_zip:
+                zip_code = st.text_input("郵便番号 (例: 9896162) *")
+            with col_btn:
+                st.write("") # スペース調整
+                st.write("")
+                search_clicked = st.form_submit_button("住所検索")
+            
+            # 住所検索ロジック (再描画時に反映させる工夫)
+            if search_clicked and zip_code:
+                found_addr = search_address_by_zip(zip_code)
+                if found_addr:
+                    st.session_state.form_address = found_addr
+                else:
+                    st.toast("住所が見つかりませんでした", icon="⚠️")
+
+            # 住所入力（SessionStateから値をいれる）
+            address = st.text_input("ご住所 *", value=st.session_state.form_address)
+            
+            tel = st.text_input("電話番号 *")
             email = st.text_input("メールアドレス")
-            address = st.text_input("ご住所（大崎市内・周辺地域）")
             detail = st.text_area("詳しい症状（任意）")
-            if st.form_submit_button("予約を送信する"):
-                if name and tel:
+            
+            st.markdown("---")
+            submit_btn = st.form_submit_button("内容を送信する")
+            
+            if submit_btn:
+                if name and tel and address:
                     with st.spinner("送信中..."):
-                        if send_email(name, tel, email, address, detail):
+                        if send_email(name, tel, email, zip_code, address, detail):
                             st.session_state.step = "completed"
                             st.session_state.booking_info = f"{name}様"
                             st.rerun()
                 else:
-                    st.error("お名前と電話番号は必須です。")
+                    st.error("お名前、電話番号、ご住所は必須項目です。")
 
     elif current_step == "solved":
         # 解決
